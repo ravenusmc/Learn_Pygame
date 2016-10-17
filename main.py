@@ -44,6 +44,9 @@ def gameLoop():
     lead_x_change = 0
     lead_y_change = 0
 
+    snakeList = []
+    snakeLength = 1
+
     randAppleX = round(random.randrange(0, display_width - block_size) /10.0)* 10.0
     randAppleY = round(random.randrange(0, display_height - block_size)/ 10.0) * 10.0
 
@@ -89,11 +92,18 @@ def gameLoop():
         gameDisplay.fill(white)
         #Apple line
         pygame.draw.rect(gameDisplay, red, [randAppleX , randAppleY, block_size, block_size])
-        snakeList = []
+        
         snakeHead = []
         snakeHead.append(lead_x)
         snakeHead.append(lead_y)
         snakeList.append(snakeHead)
+        
+        if len(snakeList) > snakeLength:
+            del snakeList[0]
+
+        for eachSegment in snakeList[:-1]:
+            if eachSegment == snakeHead:
+                gameOver = True
         
         snake(block_size, snakeList)
         pygame.display.update()
@@ -101,7 +111,7 @@ def gameLoop():
         if lead_x == randAppleX and lead_y == randAppleY:
             randAppleX = round(random.randrange(0, display_width - block_size) /10.0)* 10.0
             randAppleY = round(random.randrange(0, display_height - block_size)/ 10.0) * 10.0
-
+            snakeLength += 1
 
         clock.tick(FPS)
         
