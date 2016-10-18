@@ -25,6 +25,27 @@ medfont = pygame.font.SysFont("comicsansms", 50)
 largefont = pygame.font.SysFont("comicsansms", 80)
 
 ##Functions
+def pause():
+    
+    paused = True
+
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    paused = False
+                elif event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+        gameDisplay.fill(white)
+        message_to_screen("Paused", black, -100, "large")
+        message_to_screen("Press c to continue or q to quit", black, 25)
+        pygame.display.update()
+        clock.tick(10)
+
 def score(score):
     text = smallfont.render("Score: "+str(score), True, black)
     gameDisplay.blit(text, [0,0])
@@ -61,7 +82,7 @@ def game_intro():
                           black,
                           50,
                           "small")
-        message_to_screen("Press c to play or q to quit",
+        message_to_screen("Press c to play, p to pause or q to quit",
                           black,
                           180,
                           "small")
@@ -141,6 +162,8 @@ def gameLoop():
                 elif event.key == pygame.K_DOWN:
                     lead_y_change = block_size
                     lead_x_change = 0
+                elif event.key == pygame.K_p:
+                    pause()
 
         #adding boundaries            
         if lead_x >= display_width or lead_x < 0 or lead_y >= display_height or lead_y < 0:
